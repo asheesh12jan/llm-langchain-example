@@ -1,0 +1,13 @@
+langchain
+langchain_community
+langchain_openai
+openai==1.12.0
+python-dotenv
+faiss-cpu
+pinecone-client
+pypdf
+pycryptodome==3.19.1
+grpcio
+grpcio-tools
+
+
