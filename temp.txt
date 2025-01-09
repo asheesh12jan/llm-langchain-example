@@ -1,0 +1,33 @@
+# TODO(developer): Set dataset_id to the ID of the dataset to fetch.
+dataset_id = "clean-emblem-395622.test2"
+
+# TODO(developer): Set entity_id to the ID of the email or group from whom you are revoking access.
+entity_id = "projectOwners"
+
+from google.cloud import bigquery
+
+# Construct a BigQuery client object.
+client = bigquery.Client(project="clean-emblem-395622", location="region-us-east1")
+
+dataset = client.get_dataset(dataset_id)  # Make an API request.
+
+entries = list(dataset.access_entries)
+
+print(dataset.access_entries)
+for e in entries:
+    print(e.entity_id)
+    print(e.entity_type)
+
+dataset.access_entries = [
+    entry for entry in entries if entry.entity_id == entity_id
+]
+print(dataset.access_entries)
+
+dataset = client.update_dataset(
+    dataset,
+    # Update just the `access_entries` property of the dataset.
+    ["access_entries"],
+)  # Make an API request.
+
+full_dataset_id = f"{dataset.project}.{dataset.dataset_id}"
+print(f"Revoked dataset access for '{entity_id}' to ' dataset '{full_dataset_id}.'")
